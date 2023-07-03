@@ -24,33 +24,24 @@ const SignUpModal = ({ SetIsOpen }) => {
     setImgFile(event.target.files[0]);
   };
 
-  const update = async event => {
-    event.preventDefault();
-    try {
-      const imageRef = ref(storage, `profileImg/${auth.currentUser.uid}`);
-      await uploadBytes(imageRef, imgFile);
-      const url = await getDownloadURL(imageRef);
-      updateProfile(auth.currentUser, {
-        displayName: user.displayName,
-        photoURL: url
-      });
-    } catch (error) {
-      setErrorMsg(error.code);
-    }
-  };
-
   const signUp = async event => {
     event.preventDefault();
     if (user.password !== user.passwordConfirm) return setErrorMsg("비밀번호가 일치하지 않습니다.");
 
     try {
       await createUserWithEmailAndPassword(auth, user.email, user.password);
-      update(event);
+      const imageRef = ref(storage, `profileImg/${auth.currentUser.uid}`);
+      await uploadBytes(imageRef, imgFile);
+      const url = await getDownloadURL(imageRef);
+      await updateProfile(auth.currentUser, {
+        displayName: user.displayName,
+        photoURL: url
+      });
+      navigator(0);
+      closeModal();
     } catch (error) {
       setErrorMsg(error.code);
     }
-    navigator(0);
-    closeModal();
   };
 
   const inputCaption = (type, name) => ({

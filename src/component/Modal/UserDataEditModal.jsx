@@ -30,15 +30,15 @@ const UserDataEditModal = ({ setIsOpen }) => {
       const imageRef = ref(storage, `profileImg/${auth.currentUser.uid}`);
       await uploadBytes(imageRef, imgFile);
       const url = await getDownloadURL(imageRef);
-      updateProfile(auth.currentUser, {
+      await updateProfile(auth.currentUser, {
         displayName: user.displayName,
         photoURL: url
       });
+      navigator(0);
+      closeModal();
     } catch (error) {
       setErrorMsg(error.code);
     }
-    navigator(0);
-    closeModal();
   };
 
   const inputCaption = (type, name) => ({
