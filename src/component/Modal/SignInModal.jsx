@@ -28,7 +28,7 @@ const SignInModal = ({ SetIsOpen }) => {
       await signInWithEmailAndPassword(auth, user.email, user.password);
       closeModal();
     } catch (error) {
-      setErrorMsg(error);
+      setErrorMsg(error.code);
     }
     setUser({ email: "", password: "" });
   };
