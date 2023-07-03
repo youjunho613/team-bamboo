@@ -4,6 +4,7 @@ import { db } from "modules/firebase";
 import { collection, getDocs, query } from "firebase/firestore";
 import EditModal from "component/Modal/EditModal";
 import basic from "assets/basic.jpg";
+import { useSelector } from "react-redux";
 
 const Post = ({ photoURL, bamboo, setBamboos }) => {
   const [profileImg, setProfileImg] = useState();
@@ -26,7 +27,17 @@ const Post = ({ photoURL, bamboo, setBamboos }) => {
     fetchData();
   }, [setBamboos]);
 
-  const contentEditOpenModal = () => setContentEditOpen(true);
+  const { uid } = useSelector(state => state.userInfo);
+  const contentEditOpenModal = () => {
+    if (uid === null) {
+      alert("로그인이 필요합니다.");
+    } else if (uid !== bamboo.uid) {
+      alert("게시물을 작성한 유저가 아닙니다.");
+    } else {
+      setContentEditOpen(true);
+    }
+  };
+
   const [contentEditOpen, setContentEditOpen] = useState(false);
 
   return (

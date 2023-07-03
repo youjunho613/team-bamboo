@@ -14,10 +14,23 @@ import edit from "assets/edit.png";
 const Profile = () => {
   const { photoURL, displayName, email } = useSelector(state => state.userInfo);
 
-  const PostOpenModal = () => setPostIsOpen(true);
+  const { uid } = useSelector(state => state.userInfo);
+  const PostOpenModal = () => {
+    if (uid === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      setPostIsOpen(true);
+    }
+  };
   const [postIsOpen, setPostIsOpen] = useState(false);
 
-  const EditOpenModal = () => setEditIsOpen(true);
+  const EditOpenModal = () => {
+    if (uid === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      setEditIsOpen(true);
+    }
+  };
   const [editIsOpen, setEditIsOpen] = useState(false);
 
   const [bamboos, setBamboos] = useState([]);
@@ -33,8 +46,6 @@ const Profile = () => {
     };
     fetchData();
   }, []);
-
-  const { uid } = useSelector(state => state.userInfo);
 
   const filterBamboos = bamboos.filter(bamboo => bamboo.uid === uid);
   return (

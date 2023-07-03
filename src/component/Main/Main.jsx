@@ -6,10 +6,18 @@ import { db } from "modules/firebase";
 import { Button } from "component/Button/Button.style";
 import PostModal from "component/Modal/PostModal";
 import Post from "component/Post/Post";
+import { useSelector } from "react-redux";
 
 const Main = () => {
   const [isOpen, SetIsOpen] = useState(false);
-  const openModal = () => SetIsOpen(true);
+  const { uid } = useSelector(state => state.userInfo);
+  const openModal = () => {
+    if (uid === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      SetIsOpen(true);
+    }
+  };
 
   const [bamboos, setBamboos] = useState([]);
   useEffect(() => {
